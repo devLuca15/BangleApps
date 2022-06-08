@@ -22,4 +22,4 @@ Name who should be contacted for support/update requests
 
 ## Creator
 
-Your name
+Luca C.

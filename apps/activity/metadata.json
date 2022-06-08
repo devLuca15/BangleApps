@@ -1,11 +1,11 @@
 {
   "id": "activity",
-  "name": "My app's activity",
-  "shortName": "Short Name activity",
+  "name": "My sport app",
+  "shortName": "Astra",
   "version": "0.01",
-  "description": "A detailed description of my great app",
+  "description": "Astra app",
   "icon": "app.png",
-  "tags": "",
+  "tags": "sport",
   "supports": ["BANGLEJS2"],
   "readme": "README.md",
   "storage": [
