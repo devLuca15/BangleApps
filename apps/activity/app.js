@@ -1,92 +1,76 @@
-// upload this to the Bangle
+// !! My Sport App
 
-var batteryInterval,
-  connected = false;
+var starActivity = true;
 
-function onMag(d) {
-  if (connected) {
-    NRF.updateServices({
-      "f8b23a4d-89ad-4220-8c9f-d81756009f0c": {
-        "f8b23a4d-89ad-4220-8c9f-d81756009f0c": {
-          value: new Int32Array([d.x, d.y, d.z]).buffer,
-          notify: true,
-        },
+var timer = 0;
+var totalSeconds = 0;
+
+var Layout = require("Layout");
+var layout = new Layout(
+  {
+    type: "v",
+    c: [
+      { type: "txt", font: "6x8:2", label: "                ", id: "timer" },
+      {
+        type: "btn",
+        font: "6x8:1",
+        label: "Start Activity",
+        pad: 6,
+        cb: (l) => setLabel(),
+        id: "btn",
       },
-    });
+    ],
+  },
+  { btns: [], lazy: true }
+);
+
+function countUpTimer() {
+  totalSeconds = totalSeconds + 1;
+  var hour = Math.floor(totalSeconds / 3600);
+  var minute = Math.floor((totalSeconds - hour * 3600) / 60);
+  var seconds = totalSeconds - (hour * 3600 + minute * 60);
+
+  timer = hour + ":" + minute + ":" + seconds;
+  layout.timer.label = timer;
+
+  console.log(layout.timer.label);
+
+  layout.render();
+}
+
+function setLabel() {
+  if (starActivity) {
+    //Lancio una nuova attivtà
+
+    startTimer = setInterval(countUpTimer, 1000);
+
+    //layout.timer.label = '12:10:02';
+    layout.btn.label = "Stop Activity";
+
+    starActivity = false;
+  } else {
+    //Fermo una attivtà
+
+    console.log("Final seconds: " + totalSeconds);
+
+    timer = 0;
+    totalSeconds = 0;
+    clearInterval(startTimer);
+
+    layout.timer.label = "         ";
+    layout.btn.label = "Start Activity";
+
+    starActivity = true;
+
+    //TODO: Post con tempo attività aggiornata;
+
+    console.log("Posting activity...");
+
+    //TODO: Fine Post
   }
+
+  layout.render();
 }
 
-function onAccel(d) {
-  if (connected) {
-    NRF.updateServices({
-      "f8b23a4d-89ad-4220-8c9f-d81756009f0c": {
-        "f8b23a4d-89ad-4220-8c9f-d81756009f0d": {
-          value: new Float32Array([d.x, d.y, d.z]).buffer,
-          notify: true,
-        },
-      },
-    });
-  }
-}
-
-function updateBattery() {
-  NRF.updateServices({
-    0x2a19: {
-      0x2a19: {
-        notify: true,
-        readable: true,
-        value: [E.getBattery()],
-      },
-    },
-  });
-}
-
-function onInit() {
-  // on connect / disconnect blink the green / red LED turn on / off the magnetometer
-  NRF.on("connect", function () {
-    connected = true;
-    Bangle.setCompassPower(1);
-  });
-  NRF.on("disconnect", function () {
-    connected = false;
-    Bangle.setCompassPower(0);
-  });
-
-  // declare the services
-  NRF.setServices({
-    // Battery level service
-    0x2a19: {
-      0x2a19: {
-        notify: true,
-        readable: true,
-        value: [E.getBattery()],
-      },
-    },
-    // Magneto&accelerometer service
-    "f8b23a4d-89ad-4220-8c9f-d81756009f0c": {
-      "f8b23a4d-89ad-4220-8c9f-d81756009f0c": {
-        description: "Bangle magnetometer",
-        notify: true,
-        readable: true,
-        value: new Int32Array([0, 0, 0]).buffer,
-        writable: true,
-        onWrite: function (evt) {
-          var d = evt.data && evt.data[0];
-          if ([80, 40, 20, 10, 5].indexOf(d) >= 0) {
-            Bangle.setPollInterval(1000 / d);
-          }
-        },
-      },
-      "f8b23a4d-89ad-4220-8c9f-d81756009f0d": {
-        description: "Bangle accelerometer",
-        notify: true,
-        readable: true,
-        value: new Float32Array([0, 0, 0, 0, 0]).buffer,
-      },
-    },
-  });
-
-  batteryInterval = setInterval(updateBattery, 10000);
-  Bangle.on("accel", onAccel);
-  Bangle.on("mag", onMag);
-}
+g.clear();
+layout.render();
