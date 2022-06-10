@@ -1,3 +1,5 @@
+// !! My Sport App
+
 var starActivity = true;
 
 var timer = 0;
