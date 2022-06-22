@@ -25,8 +25,6 @@ let getTimer = () => {
   return timer;
 };
 
-NRF.setServices({}, { uart: false });
-
 NRF.setServices({
   "f8b23a4d-89ad-4220-8c9f-d81756009f0c": {
     "f8b23a4d-89ad-4220-8c9f-d81756009f0c": {
