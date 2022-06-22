@@ -25,9 +25,11 @@ let getTimer = () => {
   return timer;
 };
 
+NRF.setServices({}, { uart: false });
+
 NRF.setServices({
-  "6e400001-b5a3-f393-e0a9-e50e24dcca9e": {
-    "6e400001-b5a3-f393-e0a9-e50e24dcca9e": {
+  "f8b23a4d-89ad-4220-8c9f-d81756009f0c": {
+    "f8b23a4d-89ad-4220-8c9f-d81756009f0c": {
       notify: true,
       readable: true,
       value: [timer],
@@ -36,9 +38,8 @@ NRF.setServices({
 });
 
 NRF.setServices({
-  // Battery level service
-  "6e400001-b5a3-f393-e0a9-e50e24dcca9e": {
-    "6e400001-b5a3-f393-e0a9-e50e24dcca9e": {
+  0x2a19: {
+    0x2a19: {
       notify: true,
       readable: true,
       value: [E.getBattery()],
