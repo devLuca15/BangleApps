@@ -550,8 +550,7 @@ function setLabel() {
   layout.render();
 }
 
-g.clear();
-layout.render();
+// ?? BLE Connection - START
 
 NRF.on("connect", function () {
   console.log("connected!");
@@ -564,7 +563,6 @@ NRF.on("disconnect", function () {
   g.drawString("Disconnected :(");
 });
 
-// Display Hello World!
 g.clear();
 g.setFont("Vector", 20);
 g.drawString(E.getBattery());
@@ -599,3 +597,8 @@ NRF.setServices({
     },
   },
 });
+
+// ?? BLE Connection - END
+
+g.clear();
+layout.render();
