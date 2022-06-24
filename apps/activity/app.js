@@ -485,20 +485,28 @@ Layout.prototype.clear = function (l) {
 
 // !! BLE Connection
 
+// ?? Connection & Disconnect on screen
+
+/* 
 NRF.on("connect", function () {
   console.log("connected!");
-  // g.clear();
-  // g.drawString("Connected!");
+  g.clear();
+  g.drawString("Connected!");
 });
 
 NRF.on("disconnect", function () {
   g.clear();
   g.drawString("Disconnected :(");
-});
+}); 
+*/
 
+// ?? Show battery on screen
+
+/*
 g.clear();
 g.setFont("Vector", 20);
 g.drawString(E.getBattery());
+*/
 
 let timerConnection = 0;
 
