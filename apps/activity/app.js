@@ -483,51 +483,17 @@ Layout.prototype.clear = function (l) {
   g.clearRect(l.x, l.y, l.x + l.w - 1, l.y + l.h - 1);
 };
 
-// !! BLE Connection
-
-// ?? Connection & Disconnect on screen
-
-/* 
-NRF.on("connect", function () {
-  console.log("connected!");
-  g.clear();
-  g.drawString("Connected!");
-});
-
-NRF.on("disconnect", function () {
-  g.clear();
-  g.drawString("Disconnected :(");
-}); 
-*/
-
-// ?? Show battery on screen
-
-/*
-g.clear();
-g.setFont("Vector", 20);
-g.drawString(E.getBattery());
-*/
-
-let timerConnection = 0;
-
-setInterval(function () {
-  timerConnection++;
-}, 1000);
-
-let getTimer = () => {
-  g.drawString(timerConnection);
-  return timerConnection;
-};
+// !! BLT Settings
 
 NRF.setServices({
-  "f8b23a4d-89ad-4220-8c9f-d81756009f0c": {
-    "f8b23a4d-89ad-4220-8c9f-d81756009f0c": {
-      notify: true,
-      readable: true,
-      value: [timerConnection],
-    },
-  },
-});
+      0x2a19: {
+        0x2a19: {
+          notify: true,
+          readable: true,
+          value: 0,
+        },
+      },
+    });
 
 // !! Espruino App
 
@@ -581,17 +547,15 @@ function setLabel() {
 
     //TODO: Post con tempo attività aggiornata;
 
-    NRF.setServices({
+    NRF.updateServices({
       0x2a19: {
         0x2a19: {
           notify: true,
           readable: true,
-          value: [totalSeconds],
+          value: totalSeconds,
         },
       },
     });
-
-    //TODO: Fine Post
 
     timer = 0;
     totalSeconds = 0;
