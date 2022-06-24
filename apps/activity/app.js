@@ -487,8 +487,8 @@ Layout.prototype.clear = function (l) {
 
 NRF.on("connect", function () {
   console.log("connected!");
-  g.clear();
-  g.drawString("Connected!");
+  // g.clear();
+  // g.drawString("Connected!");
 });
 
 NRF.on("disconnect", function () {
