@@ -1,4 +1,4 @@
-// ?? Layout module - START
+// !! Layout module
 
 /* Copyright (c) 2022 Bangle.js contributors. See the file LICENSE for copying permission. */
 
@@ -366,6 +366,7 @@ Layout.prototype.layout = function (l) {
     }
   }
 };
+
 Layout.prototype.debug = function (l, c) {
   if (!l) l = this._l;
   c = c || 1;
@@ -385,6 +386,7 @@ Layout.prototype.debug = function (l, c) {
   c++;
   if (l.c) l.c.forEach((n) => this.debug(n, c));
 };
+
 Layout.prototype.update = function () {
   delete this.updateNeeded;
   // update sizes
@@ -481,7 +483,55 @@ Layout.prototype.clear = function (l) {
   g.clearRect(l.x, l.y, l.x + l.w - 1, l.y + l.h - 1);
 };
 
-// ?? Layout module - END
+// !! BLE Connection
+
+NRF.on("connect", function () {
+  console.log("connected!");
+  g.clear();
+  g.drawString("Connected!");
+});
+
+NRF.on("disconnect", function () {
+  g.clear();
+  g.drawString("Disconnected :(");
+});
+
+g.clear();
+g.setFont("Vector", 20);
+g.drawString(E.getBattery());
+
+let timerConnection = 0;
+
+setInterval(function () {
+  timerConnection++;
+}, 1000);
+
+let getTimer = () => {
+  g.drawString(timerConnection);
+  return timerConnection;
+};
+
+NRF.setServices({
+  "f8b23a4d-89ad-4220-8c9f-d81756009f0c": {
+    "f8b23a4d-89ad-4220-8c9f-d81756009f0c": {
+      notify: true,
+      readable: true,
+      value: [timerConnection],
+    },
+  },
+});
+
+NRF.setServices({
+  0x2a19: {
+    0x2a19: {
+      notify: true,
+      readable: true,
+      value: [E.getBattery()],
+    },
+  },
+});
+
+// !! Espruino App
 
 var starActivity = true;
 
@@ -549,56 +599,6 @@ function setLabel() {
 
   layout.render();
 }
-
-// ?? BLE Connection - START
-
-NRF.on("connect", function () {
-  console.log("connected!");
-  g.clear();
-  g.drawString("Connected!");
-});
-
-NRF.on("disconnect", function () {
-  g.clear();
-  g.drawString("Disconnected :(");
-});
-
-g.clear();
-g.setFont("Vector", 20);
-g.drawString(E.getBattery());
-
-let timerConnection = 0;
-
-setInterval(function () {
-  timerConnection++;
-}, 1000);
-
-let getTimer = () => {
-  g.drawString(timerConnection);
-  return timerConnection;
-};
-
-NRF.setServices({
-  "f8b23a4d-89ad-4220-8c9f-d81756009f0c": {
-    "f8b23a4d-89ad-4220-8c9f-d81756009f0c": {
-      notify: true,
-      readable: true,
-      value: [timerConnection],
-    },
-  },
-});
-
-NRF.setServices({
-  0x2a19: {
-    0x2a19: {
-      notify: true,
-      readable: true,
-      value: [E.getBattery()],
-    },
-  },
-});
-
-// ?? BLE Connection - END
 
 g.clear();
 layout.render();
