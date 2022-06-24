@@ -529,16 +529,6 @@ NRF.setServices({
   },
 });
 
-NRF.setServices({
-  0x2a19: {
-    0x2a19: {
-      notify: true,
-      readable: true,
-      value: [E.getBattery()],
-    },
-  },
-});
-
 // !! Espruino App
 
 var starActivity = true;
@@ -591,7 +581,15 @@ function setLabel() {
 
     //TODO: Post con tempo attività aggiornata;
 
-    Bluetooth.println(totalSeconds);
+    NRF.setServices({
+      0x2a19: {
+        0x2a19: {
+          notify: true,
+          readable: true,
+          value: [totalSeconds],
+        },
+      },
+    });
 
     //TODO: Fine Post
 
