@@ -8,8 +8,5 @@
   "tags": "sport",
   "supports": ["BANGLEJS2"],
   "readme": "README.md",
-  "storage": [
-    { "name": "activity.app.js", "url": "app.js" },
-    { "name": "activity.img", "url": "app-icon.js", "evaluate": true }
-  ]
+  "storage": [{ "name": "activity.app.js", "url": "app.js" }]
 }
