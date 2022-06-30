@@ -486,14 +486,14 @@ Layout.prototype.clear = function (l) {
 // !! BLT Settings
 
 NRF.setServices({
-      0x2a19: {
-        0x2a19: {
-          notify: true,
-          readable: true,
-          value: 0,
-        },
-      },
-    });
+  0x2a19: {
+    0x2a19: {
+      notify: true,
+      readable: true,
+      value: 0,
+    },
+  },
+});
 
 // !! Espruino App
 
