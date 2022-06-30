@@ -4,7 +4,7 @@
   "shortName": "Astra",
   "version": "0.01",
   "description": "Astra app",
-  "icon": "widget.png",
+  "icon": "app.png",
   "tags": "sport",
   "supports": ["BANGLEJS2"],
   "readme": "README.md",
