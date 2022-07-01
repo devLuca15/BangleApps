@@ -483,19 +483,59 @@ Layout.prototype.clear = function (l) {
   g.clearRect(l.x, l.y, l.x + l.w - 1, l.y + l.h - 1);
 };
 
-// !! BLT Settings
+// !! Array BLT Settings
 
-NRF.setServices({
-  0x2a20: {
-    0x2a20: {
-      notify: true,
-      readable: true,
-      value: [0],
-    },
-  },
-});
+function updateActivities() {
+  if (bleConnection) {
+    arraySettings = [totalSeconds];
+
+    for (var i = 0; i < arraySettings.length; i++) {
+      myActivities[i] = arraySettings[i];
+    }
+
+    NRF.setServices({
+      0x2a20: {
+        0x2a20: {
+          notify: true,
+          readable: true,
+          value: [myActivities],
+        },
+      },
+    });
+
+    console.log(myActivities);
+
+    bleConnection = false;
+
+    return;
+  }
+
+  arraySettings.push(totalSeconds);
+
+  for (var i = 0; i < arraySettings.length; i++) {
+    myActivities[i] = arraySettings[i];
+  }
+
+  setInterval(() => {
+    NRF.updateServices({
+      0x2a20: {
+        0x2a20: {
+          notify: true,
+          readable: true,
+          value: [myActivities],
+        },
+      },
+    });
+  }, 500);
+
+  console.log(myActivities);
+}
 
 // !! Espruino App
+
+var arraySettings = [];
+
+var myActivities = new Array();
 
 var bleConnection = true;
 var starActivity = true;
@@ -547,16 +587,7 @@ function setLabel() {
     //Fermo una attivtà
 
     //TODO: Post con tempo attività aggiornata;
-
-    NRF.updateServices({
-      0x2a20: {
-        0x2a20: {
-          notify: true,
-          readable: true,
-          value: [totalSeconds],
-        },
-      },
-    });
+    updateActivities();
 
     timer = 0;
     totalSeconds = 0;
