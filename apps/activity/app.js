@@ -486,17 +486,18 @@ Layout.prototype.clear = function (l) {
 // !! BLT Settings
 
 NRF.setServices({
-  0x2a19: {
-    0x2a19: {
+  0x2a20: {
+    0x2a20: {
       notify: true,
       readable: true,
-      value: 0,
+      value: [0],
     },
   },
 });
 
 // !! Espruino App
 
+var bleConnection = true;
 var starActivity = true;
 
 var timer = 0;
@@ -548,11 +549,11 @@ function setLabel() {
     //TODO: Post con tempo attività aggiornata;
 
     NRF.updateServices({
-      0x2a19: {
-        0x2a19: {
+      0x2a20: {
+        0x2a20: {
           notify: true,
           readable: true,
-          value: totalSeconds,
+          value: [totalSeconds],
         },
       },
     });
